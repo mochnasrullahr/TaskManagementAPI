@@ -59,12 +59,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+// middleware (app.Use...)
 app.UseHttpsRedirection();
 
 app.UseAuthentication(); // autentikasi sebelum otorisasi
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers(); // routing
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

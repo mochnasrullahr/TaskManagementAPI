@@ -12,7 +12,9 @@ namespace TaskManagementAPI.Services
 
         public async Task<User> Authenticate(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            var user = await _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Username == username);
 
             if (user == null)
             {

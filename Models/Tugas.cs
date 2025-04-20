@@ -23,12 +23,11 @@ namespace TaskManagementAPI.Models
 
         [ForeignKey("Assignee")]
         public int? AssigneeId { get; set; } // Nullable foreign key
-        public virtual User Assignee { get; set; }
+        public virtual User? Assignee { get; set; }
 
         [ForeignKey("Creator")]
-        [Required]
-        public int CreatorId { get; set; }
-        public virtual User Creator { get; set; }
+        public int? CreatorId { get; set; }
+        public virtual User? Creator { get; set; }
     }
 
 }

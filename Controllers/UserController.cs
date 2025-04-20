@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -90,6 +91,9 @@ namespace TaskManagementAPI.Controllers
             {
                 return NotFound();
             }
+
+            var userRoleClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            Console.WriteLine($"Peran Pengguna: {userRoleClaim}");
 
             var createdTasks = await _context.Tugas.Where(t => t.CreatorId == id).ToListAsync();
             _context.Tugas.RemoveRange(createdTasks);

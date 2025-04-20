@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -76,12 +77,19 @@ namespace TaskManagementAPI.Controllers
         // POST: api/Tugas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tugas>> PostTugas(Tugas tugas)
+        public async Task<ActionResult<Tugas>> PostTugas([FromBody] Tugas tugas)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            var creatorIdClaim = User.FindFirstValue("UserId");
+            if (!int.TryParse(creatorIdClaim, out int creatorId))
+            {
+                return BadRequest("User ID pembuat tidak valid atau tidak ditemukan dalam token.");
+            }
+            tugas.CreatorId = creatorId;
 
             _context.Tugas.Add(tugas);
             await _context.SaveChangesAsync();
