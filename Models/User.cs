@@ -19,9 +19,9 @@ namespace TaskManagementAPI.Models
 
         [ForeignKey("Role")]
         public int RoleId { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual Role? Role { get; set; }
 
-        public virtual ICollection<Tugas> AssignedTasks { get; set; }
-        public virtual ICollection<Tugas> CreatedTasks { get; set; }
+        public virtual ICollection<Tugas>? AssignedTasks { get; set; }
+        public virtual ICollection<Tugas>? CreatedTasks { get; set; }
     }
 }

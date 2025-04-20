@@ -42,6 +42,11 @@ namespace TaskManagementAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTugas(int id, Tugas tugas)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id != tugas.Id)
             {
                 return BadRequest();
@@ -73,6 +78,11 @@ namespace TaskManagementAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Tugas>> PostTugas(Tugas tugas)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _context.Tugas.Add(tugas);
             await _context.SaveChangesAsync();
 

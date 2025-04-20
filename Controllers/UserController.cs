@@ -95,6 +95,21 @@ namespace TaskManagementAPI.Controllers
             return NoContent();
         }
 
+        [HttpGet("{userId}/AssignedTasks")]
+        public async Task<ActionResult<IEnumerable<Tugas>>> GetAssignedTasksForUser(int userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.AssignedTasks)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user.AssignedTasks);
+        }
+
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.Id == id);

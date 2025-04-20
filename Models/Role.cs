@@ -12,6 +12,6 @@ namespace TaskManagementAPI.Models
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<User>? Users { get; set; }
     }
 }
