@@ -96,7 +96,7 @@ namespace TaskManagementAPI.Controllers
         }
 
         [HttpGet("{userId}/AssignedTasks")]
-        public async Task<ActionResult<IEnumerable<Tugas>>> GetAssignedTasksForUser(int userId)
+        public async Task<ActionResult<IEnumerable<Tugas>>> GetAssignedTugasForUser(int userId)
         {
             var user = await _context.Users
                 .Include(u => u.AssignedTasks)
