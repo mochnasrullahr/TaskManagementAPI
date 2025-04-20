@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -80,6 +81,7 @@ namespace TaskManagementAPI.Controllers
         }
 
         // DELETE: api/User/5
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -89,10 +91,22 @@ namespace TaskManagementAPI.Controllers
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            var createdTasks = await _context.Tugas.Where(t => t.CreatorId == id).ToListAsync();
+            _context.Tugas.RemoveRange(createdTasks);
 
-            return NoContent();
+            _context.Users.Remove(user);
+
+            // execute in single Transaction
+            try
+            {
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Fail to delte user and created tasks by the user: {ex.Message}");
+            }
+
         }
 
         [HttpGet("{userId}/AssignedTasks")]
