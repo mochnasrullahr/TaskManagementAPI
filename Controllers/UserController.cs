@@ -12,42 +12,42 @@ namespace TaskManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TugasController(ApplicationDbContext context) : ControllerBase
+    public class UserController(ApplicationDbContext context) : ControllerBase
     {
         private readonly ApplicationDbContext _context = context;
 
-        // GET: api/Tugas
+        // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tugas>>> GetTugas()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Tugas.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Tugas/5
+        // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tugas>> GetTugas(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            var tugas = await _context.Tugas.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
-            if (tugas == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return tugas;
+            return user;
         }
 
-        // PUT: api/Tugas/5
+        // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTugas(int id, Tugas tugas)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != tugas.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tugas).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -55,7 +55,7 @@ namespace TaskManagementAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TugasExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -68,39 +68,36 @@ namespace TaskManagementAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tugas
+        // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tugas>> PostTugas(Tugas tugas)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Tugas.Add(tugas);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTugas", new { id = tugas.Id }, tugas);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Tugas/5
+        // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTugas(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var tugas = await _context.Tugas.FindAsync(id);
-            if (tugas == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Tugas.Remove(tugas);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TugasExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Tugas.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
-// > dotnet tool install --global dotnet-aspnet-codegenerator
-// > dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
-// > dotnet aspnet-codegenerator controller -name TugasController --model Tugas -dc ApplicationDbContext -api -outDir Controllers

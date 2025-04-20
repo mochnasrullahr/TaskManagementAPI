@@ -12,42 +12,42 @@ namespace TaskManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TugasController(ApplicationDbContext context) : ControllerBase
+    public class RoleController(ApplicationDbContext context) : ControllerBase
     {
         private readonly ApplicationDbContext _context = context;
 
-        // GET: api/Tugas
+        // GET: api/Role
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tugas>>> GetTugas()
+        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-            return await _context.Tugas.ToListAsync();
+            return await _context.Roles.ToListAsync();
         }
 
-        // GET: api/Tugas/5
+        // GET: api/Role/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tugas>> GetTugas(int id)
+        public async Task<ActionResult<Role>> GetRole(int id)
         {
-            var tugas = await _context.Tugas.FindAsync(id);
+            var role = await _context.Roles.FindAsync(id);
 
-            if (tugas == null)
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return tugas;
+            return role;
         }
 
-        // PUT: api/Tugas/5
+        // PUT: api/Role/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTugas(int id, Tugas tugas)
+        public async Task<IActionResult> PutRole(int id, Role role)
         {
-            if (id != tugas.Id)
+            if (id != role.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tugas).State = EntityState.Modified;
+            _context.Entry(role).State = EntityState.Modified;
 
             try
             {
@@ -55,7 +55,7 @@ namespace TaskManagementAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TugasExists(id))
+                if (!RoleExists(id))
                 {
                     return NotFound();
                 }
@@ -68,39 +68,36 @@ namespace TaskManagementAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Tugas
+        // POST: api/Role
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tugas>> PostTugas(Tugas tugas)
+        public async Task<ActionResult<Role>> PostRole(Role role)
         {
-            _context.Tugas.Add(tugas);
+            _context.Roles.Add(role);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTugas", new { id = tugas.Id }, tugas);
+            return CreatedAtAction("GetRole", new { id = role.Id }, role);
         }
 
-        // DELETE: api/Tugas/5
+        // DELETE: api/Role/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTugas(int id)
+        public async Task<IActionResult> DeleteRole(int id)
         {
-            var tugas = await _context.Tugas.FindAsync(id);
-            if (tugas == null)
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
             {
                 return NotFound();
             }
 
-            _context.Tugas.Remove(tugas);
+            _context.Roles.Remove(role);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TugasExists(int id)
+        private bool RoleExists(int id)
         {
-            return _context.Tugas.Any(e => e.Id == id);
+            return _context.Roles.Any(e => e.Id == id);
         }
     }
 }
-// > dotnet tool install --global dotnet-aspnet-codegenerator
-// > dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
-// > dotnet aspnet-codegenerator controller -name TugasController --model Tugas -dc ApplicationDbContext -api -outDir Controllers
